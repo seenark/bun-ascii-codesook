@@ -1,7 +1,8 @@
-const file = Bun.file("./05")
+const file = Bun.file("./00")
 const baseFile = await file.text()
+const lineIndex = 4
 const baseSplit = baseFile.split("\n")
-const base: string = baseFile.split("\n")[3]!
+const base: string = baseFile.split("\n")[lineIndex]!
 
 const line5Chars = Array.from({ length: 17 }).fill(":")
   .map((_, i) => {
@@ -40,7 +41,7 @@ console.log(allLine5)
 
 const images = allLine5.map(line5 => {
   const newFile = baseFile.split("\n")
-  newFile[3] = line5
+  newFile[lineIndex] = line5
   return newFile.join("\n")
 })
 
