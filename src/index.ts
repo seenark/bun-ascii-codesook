@@ -1,5 +1,6 @@
 
 import * as process from 'node:process';
+import { readdir } from "node:fs/promises"
 import { animates } from './animates';
 
 class ASCIIAnimator {
@@ -190,7 +191,13 @@ const frames: string[] = [
     `
 ];
 
-animates.start(frames, 10)
+const folder = "./frames/loading"
+const filePaths = await readdir(folder).then(
+  files => files.filter(d => d !== "index.ts" && d !== "00").sort((a, b) => a.localeCompare(b)).map(path => `${folder}/${path}`)
+)
+const frames2 = await Promise.all(filePaths.map(path => Bun.file(path).text()))
+
+animates.start(frames2, 4)
 
 // Create animator instance
 // const animator = new ASCIIAnimator(frames);

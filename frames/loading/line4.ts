@@ -5,10 +5,8 @@ async function main() {
   const empty = await file.text()
   console.log(empty.split("\n"))
 
-  const allLine4 = Array.from({ length: 19 }).fill(0).map((_, i) => {
+  const allLine4 = Array.from({ length: 18 }).fill(0).map((_, i) => {
     const line4 = empty.split("\n")[3]?.split("")
-
-    // start index = 8
 
     Array.from({ length: i }).fill(0).forEach((_, i) => {
       if (line4 === undefined) return
