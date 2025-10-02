@@ -117,7 +117,11 @@ export namespace animates {
 
 
   // Start animation
-  export function start(frames: string[], fps: number = 10): void {
+  interface FrameOption {
+    frames: string[]
+    fps: number
+  }
+  export function start(frameOptions: FrameOption[]): void {
     clearScreen();
     Cursor.hideCursor();
 
