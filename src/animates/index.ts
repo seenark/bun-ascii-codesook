@@ -121,22 +121,45 @@ export namespace animates {
     frames: string[]
     fps: number
   }
-  export function start(frameOptions: FrameOption[]): void {
+
+  export function startFrameOptoin(frameOptions: FrameOption, setIntervalId: (intervalId: NodeJS.Timeout) => void) {
+
+    const interval = 1000 / frameOptions.fps;
+    let frameIndex = 0
+    // let intervalId: NodeJS.Timeout
+
+    const donePromise = new Promise<true>((res) => {
+      const intervalId = setInterval(() => {
+        const currentFrame = frameOptions.frames[frameIndex]
+        if (currentFrame) {
+          renderFrame(currentFrame);
+          frameIndex += 1
+        } else {
+          clearInterval(intervalId)
+          res(true)
+        }
+      }, interval)
+
+      setIntervalId(intervalId)
+    })
+
+
+    return donePromise
+  }
+
+  export async function start(frameOptions: FrameOption[]) {
     clearScreen();
     Cursor.hideCursor();
 
-    const interval = 1000 / fps;
-    let frameIndex = 0
-    const intervalId = setInterval(() => {
-      const currentFrame = frames[frameIndex]
-      if (currentFrame) {
-        renderFrame(currentFrame);
+    let intervalId: NodeJS.Timeout
+
+    while (true) {
+      for (const frameOption of frameOptions) {
+        await startFrameOptoin(frameOption, (newIntervalId) => {
+          intervalId = newIntervalId
+        })
       }
-      frameIndex += 1
-      if (frameIndex > frames.length) {
-        frameIndex = 0
-      }
-    }, interval);
+    }
 
     // Handle Ctrl+C to stop animation gracefully
     process.on('SIGINT', () => {

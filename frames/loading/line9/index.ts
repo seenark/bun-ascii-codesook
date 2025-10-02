@@ -3,7 +3,23 @@ const baseFile = await file.text()
 const lineIndex = 8
 const base: string = baseFile.split("\n")[lineIndex]!
 
-const line5Chars = Array.from({ length: 17 }).fill(":")
+const line5Chars = Array.from({ length: 17 }).fill(":").map((d, i) => {
+  switch (i) {
+    case 2: return "c"
+    case 3: return "o"
+    case 4: return "d"
+    case 5: return "e"
+    case 6: return "s"
+    case 7: return "o"
+    case 8: return "o"
+    case 9: return "k"
+    case 10: return "."
+    case 11: return "d"
+    case 12: return "e"
+    case 13: return "v"
+    default: return d
+  }
+})
 
 const startIndex = 8
 const endIndexStart = 25
